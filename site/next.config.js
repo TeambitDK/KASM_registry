@@ -4,10 +4,10 @@ const nextConfig = {
   output: 'export',
   distDir: '../public',
   env: {
-    name: 'Kasm Technologies',
-    description: 'The official store for Kasm supported workspaces.',
+    name: 'Teambit Production',
+    description: 'The unofficial reproduction of a KASM template. Use at your own risk',
     icon: '/img/logo.svg',
-    listUrl: 'https://registry.kasmweb.com/',
+    listUrl: 'https://github.com/TeambitDK/KASM_registry/',
     contactUrl: 'https://kasmweb.com/support',
   },
   reactStrictMode: true,
