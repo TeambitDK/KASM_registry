@@ -5,6 +5,7 @@ USER root
 ENV DEBIAN_FRONTEND=noninteractive
 ENV HOME=/home/kasm-default-profile
 ENV STARTUPDIR=/dockerstartup
+ENV LD_LIBRARY_PATH=/usr/lib/libreoffice/program:$LD_LIBRARY_PATH
 
 # Tilføj Microsoft fonts EULA accept
 RUN echo "ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true" | debconf-set-selections
@@ -102,8 +103,15 @@ RUN for app in \
         cp "/usr/share/applications/${app}.desktop" $HOME/Desktop/; \
     fi; \
     done \
-    && chmod +x $HOME/Desktop/*.desktop \
-    && chown -R 1000:1000 $HOME/Desktop/
+    && chmod +x $HOME/Desktop/*.desktop
+
+# Fix VS Code til at køre med --no-sandbox (kræves i containers)
+RUN if [ -f "$HOME/Desktop/code.desktop" ]; then \
+    sed -i 's|Exec=/usr/share/code/code|Exec=/usr/share/code/code --no-sandbox|g' $HOME/Desktop/code.desktop; \
+    fi
+
+# Fix permissions på hele profil-mappen
+RUN chown -R 1000:1000 /home/kasm-default-profile
 
 # Skift tilbage til kasm-user
 USER 1000
